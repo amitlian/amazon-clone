@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import '../CheckOut/Subtotal.css'
 import CurrencyFormat from 'react-currency-format'
 import {useStateValue} from '../StateProvider';
