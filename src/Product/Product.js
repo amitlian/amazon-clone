@@ -2,6 +2,7 @@ import React from 'react'
 import '../Product/Product.css'
 import GradeIcon from '@material-ui/icons/Grade';
 import {useStateValue} from '../StateProvider';
+import {Spring} from 'react-spring'
 
 function Product({id,title,image,price,rating}) {
     const [{basket},dispatch] = useStateValue();
@@ -21,18 +22,19 @@ function Product({id,title,image,price,rating}) {
             <div className="product_info">
                 <p>{title}</p>
                 <p className="product_price">
-                    <small>$</small>
-                    <strong>{price}</strong>
+                <small>$</small>
+                <strong>{price}</strong>
                 </p>
-                <div className="product_rating">
-                    {Array(rating).fill().map((_,i)=>(
-                        <GradeIcon/>
-                    ))}
-                </div>
+                    <div className="product_rating">
+                        {Array(rating).fill().map((_,i)=>(
+                         <GradeIcon/>
+                        ))}
+                    </div>
             </div>
-            <img className="product_image" src={image}/>
-            <button onClick={addToBasket}>Add To Basket</button>
+                <img className="product_image" src={image}/>
+                <button onClick={addToBasket}>Add To Basket</button>
         </div>
+
     )
 }
 

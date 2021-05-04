@@ -13,26 +13,26 @@ function CheckoutProduct({id,title,image,price,rating}) {
         })
     }
     return (
-        <div className="checkoutproduct">
-            <div className="container">
-                <div className="container_left">
-                    <img src={image}/>
-                </div>
-                <div className="container_right">
-                    <p className="checkout_Title">{title}</p>
-                    <p className="checkout_product_price">
-                        <small>$</small>
-                        <strong>{price}</strong>
-                    </p>
-                    <div className="product_rating">
-                        {Array(rating).fill().map((_,i)=>(
-                            <GradeIcon/>
-                        ))}
-                    </div>
-                    <button onClick={removeItem} className="remove_button">Remove From Basket</button>
-                </div>
-            </div>
-        </div>
+            <div className="checkoutproduct">
+                        <div className="container">
+                            <div className="container_left">
+                                <img src={image}/>
+                                </div>
+                            <div className="container_right">
+                                <p className="checkout_Title">{title}</p>
+                                <p className="checkout_product_price">
+                                    <small>$</small>
+                                    <strong>{price}</strong>
+                                </p>
+                                <div className="product_rating">
+                                    {Array(rating).fill().map((_,i)=>(
+                                        <GradeIcon/>
+                                    ))}
+                                </div>
+                                <button onClick={removeItem} className="remove_button">Remove From Basket</button>
+                            </div>
+                        </div>
+                </div>               
     )
 }
 
