@@ -2,11 +2,20 @@ import React from 'react'
 import '../Product/Product.css'
 import GradeIcon from '@material-ui/icons/Grade';
 import {useStateValue} from '../StateProvider';
-import {Spring} from 'react-spring'
+import {animated,useSpring} from 'react-spring'
 
 function Product({id,title,image,price,rating}) {
     const [{basket},dispatch] = useStateValue();
     // console.log("this is the Basket====>",basket[0].title);
+    const anim = useSpring({
+        from:{
+            opacity:0,
+            marginLeft:-500
+        },to:{
+            opacity:1,
+            marginLeft:0
+        }
+    })
 
     const addToBasket = ()=>{
         // dispatch item to the datalayer
@@ -18,7 +27,7 @@ function Product({id,title,image,price,rating}) {
         })
     }
     return (
-        <div className="product">
+        <animated.div style={anim} className="product">
             <div className="product_info">
                 <p>{title}</p>
                 <p className="product_price">
@@ -33,7 +42,7 @@ function Product({id,title,image,price,rating}) {
             </div>
                 <img className="product_image" src={image}/>
                 <button onClick={addToBasket}>Add To Basket</button>
-        </div>
+        </animated.div>
 
     )
 }

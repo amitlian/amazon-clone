@@ -4,9 +4,19 @@ import Subtotal from '../CheckOut/Subtotal'
 import Product from '../Product/Product'
 import {useStateValue} from '../StateProvider';
 import CheckoutProduct from '../CheckOut/CheckoutProduct'
+import {animated,useSpring} from 'react-spring'
 
 function Checkout() {
     const [{basket},dispatch] = useStateValue();
+    const anim = useSpring({
+        from:{
+            opacity:0,
+            marginLeft:-500
+        },to:{
+            opacity:1,
+            marginLeft:0
+        }
+    })
     return (
         <div className="checkout">
             <div className="checkout_left">
@@ -14,6 +24,7 @@ function Checkout() {
                 <div>
                     <h2 className="checkout_title">Your Shoping Basket</h2> 
                 </div>
+                <animated.div style={anim}>
                 {basket.map(item=>(
                     <CheckoutProduct
                     id = {item.id}
@@ -23,6 +34,8 @@ function Checkout() {
                     rating = {item.rating}         
                     />
                 ))}
+
+                </animated.div>
             </div>
             <div className="checkout_right">
                 <Subtotal/>

@@ -13,6 +13,14 @@
   border: 1px solid black;
   background-color: #f3f3f3;
   border: 1px solid #dddddd;
+  padding: 20px;
+  transition: transform 800ms;
+  box-shadow: 5px 10px 8px #888888;
+}
+
+.container:hover {
+  transform: scale(1.08);
+  opacity: 1;
 }
 
 .container_right {
@@ -28,13 +36,21 @@
 
 .remove_button {
   margin-right: 30px;
-  background-color: #f0c14b;
-  border: 1px solid;
+  border: 1px solid white;
   margin-top: 10px;
-  border-color: #a88734 #9c7e31 #846a29;
   color: #111;
   margin-bottom: 20px;
+  transition: 0.5s;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
   width: 50%;
+  font-weight: 600;
+}
+
+.remove_button:hover {
+  background-color: #f0c14b;
+  border-color: #a88734 #9c7e31 #846a29;
 }
 
 .checkout_Title {
