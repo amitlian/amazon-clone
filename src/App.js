@@ -7,12 +7,13 @@ import Login from '../src/Login/Login'
 import {auth} from '../src/firebase'
 import {useStateValue} from '../src/StateProvider';
 import Payment from '../src/Payment/Payment'
+import Order from '../src/Order/Order'
 import {loadStripe} from '@stripe/stripe-js'
 import {Elements} from '@stripe/react-stripe-js'
 
 function App() {
 
-  const promise = loadStripe('pk_test_51InyuaSGeGFov5eALKop2x2uY1lBlOsXJTJzAk5DsxyXjV99RxDcp2qsJ68COrEca5gUab8OSnh9B8aKSj88hj0i00doLnf3Op');
+  const promise = loadStripe('pk_test_51IoOH4JEeP5IP8w8X9bKSvTue9e6kmqtmqUZVlv1HWlHX7f3q1nez8om5bltWlso5TOMd2YHw5ybz57bTV8sYcaP00Ni3zBYhX');
   const [{},dispatch] = useStateValue();
 
 
@@ -57,6 +58,11 @@ function App() {
           {/* LogIn page  */}
           <Route path="/login">
               <Login/>
+          </Route>
+
+          {/* LogIn page  */}
+          <Route path="/order">
+              <Order/>
           </Route>
 
           {/* Payment page  */}

@@ -8,6 +8,7 @@ import {getBasketTotal} from '../reducer';
 import {useHistory} from 'react-router-dom'
 import axios from '../axios'
 import {CardElement , useStripe, useElements} from '@stripe/react-stripe-js';
+import {db} from '../firebase'
 
 
 
@@ -37,7 +38,8 @@ function Payment() {
             getclientSceret();
     }, [basket])
 
-    console.log("Client Secret",clientSecret)
+    // console.log("Client Secret",clientSecret)
+    // console.log("person Info",user)
 
     const handleSubmit = async(e)=>{
         //do stripe stuff
@@ -50,17 +52,28 @@ function Payment() {
             payment_method:{
                 card: elements.getElement(CardElement)
             }
-        })
+        }).then(({paymentIntent})=>{
 
-        if(payload){
+            console.log("payment Intent",paymentIntent)
+            db
+            .collection('users')
+            .doc(user?.uid)
+            .collection('orders')
+            .doc(paymentIntent.id)
+            .set({
+                basket:basket,
+                amount:paymentIntent.amount,
+                created:paymentIntent.created
+            })
+
+
             setSucceeded(true);
             setError(null);
             setProcessing(false);
             dispatch({type:'EMPTY_BASKET'})
-            history.replace('/') 
-        }
-         
+            history.replace('/order') 
 
+        })    
     }
 
     const handleChange = (e)=>{
