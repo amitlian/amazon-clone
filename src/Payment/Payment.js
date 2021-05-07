@@ -1,13 +1,77 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import '../Payment/Payment.css'
 import GradeIcon from '@material-ui/icons/Grade';
 import CheckoutProduct from '../CheckOut/CheckoutProduct'
 import CurrencyFormat from 'react-currency-format'
 import {useStateValue} from '../StateProvider';
-import {getBasketTotal} from '../reducer'
+import {getBasketTotal} from '../reducer';
+import {useHistory} from 'react-router-dom'
+import axios from '../axios'
+import {CardElement , useStripe, useElements} from '@stripe/react-stripe-js';
+
+
 
 function Payment() {
     const [{basket,user},dispatch] = useStateValue();
+    const stripe = useStripe();
+    const elements = useElements();
+    const history = useHistory();
+
+    const [processing, setProcessing] = useState("")
+    const [succeeded, setSucceeded] = useState(false)
+    const [disabled, setDisabled] = useState(true)
+    const [error, setError] = useState(null)
+    const [clientSecret, setClientSecret] = useState(true)
+
+    useEffect(() => {
+            //generate the special stripe secret which allows us to change a customer
+            const getclientSceret = async()=>{
+                const response = await axios({
+                    method: 'post',
+                    //stripe expects the total amount in subunits
+                    url:`/payments/create?total=${getBasketTotal(basket)*100}`
+                });
+                setClientSecret(response.data.clientSecret)
+            }
+
+            getclientSceret();
+    }, [basket])
+
+    console.log("Client Secret",clientSecret)
+
+    const handleSubmit = async(e)=>{
+        //do stripe stuff
+        e.preventDefault();
+        setProcessing(true);
+
+        //clientSecret == how much a customar have to charge
+        const payload = await stripe.confirmCardPayment(clientSecret,{
+            //get the info of the card
+            payment_method:{
+                card: elements.getElement(CardElement)
+            }
+        })
+
+        if(payload){
+            setSucceeded(true);
+            setError(null);
+            setProcessing(false);
+            dispatch({type:'EMPTY_BASKET'})
+            history.replace('/') 
+        }
+         
+
+    }
+
+    const handleChange = (e)=>{
+        // listen from user and display any errors or not
+        setDisabled(e.empty);
+        setError(e.error? e.error.message:"")
+    }
+
+
+
+
     return (
         <div className="payment">
             <div className="CheckoutItem">
@@ -42,22 +106,38 @@ function Payment() {
         <div className="payment_method">
                 <h3>Payment Method</h3>
         <div className="payment_total">
-            <CurrencyFormat
-            renderText = {(value)=>(
-                <>
-                <p>
-                    Order Total ({basket.length} items): <strong>{value}</strong>
-                </p>
-                </>
-            )}
 
-            decimalScale = {2}
-            value={getBasketTotal(basket)}
-            displayType = {"text"}
-            thousandSeparator = {true}
-            prefix={"$"}
-            />
-            <button>Buy now</button>
+        
+        {/* visa card part in the payment section */}
+
+        <div>
+            <form onSubmit={handleSubmit}>
+                <CardElement onChange={handleChange}/>
+                <div>
+                <CurrencyFormat
+                    renderText = {(value)=>(
+                        <>
+                        <p>
+                            Order Total ({basket.length} items): <strong>{value}</strong>
+                        </p>
+                        </>
+                    )}
+
+                    decimalScale = {2}
+                    value={getBasketTotal(basket)}
+                    displayType = {"text"}
+                    thousandSeparator = {true}
+                    prefix={"$"}
+                />
+                <button
+                disabled={processing || disabled || succeeded}>
+                    <span>{processing? <p>Processing</p>:"Buy Now"}</span>
+                </button>
+                </div>
+                {error && <div>{error}</div>}
+            </form>
+        </div>
+            
         </div>
 
             </div>

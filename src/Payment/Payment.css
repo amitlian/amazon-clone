@@ -31,6 +31,7 @@
 
 .info_product {
   margin-top: -13px;
+  margin-left: 20px;
 }
 
 .payment_method {
@@ -53,7 +54,7 @@
   margin-left: 25px;
 }
 
-.payment_total > button {
+/* .payment_total > button {
   background-color: #f0c14b;
   border-radius: 2px;
   width: 100%;
@@ -63,4 +64,4 @@
   border-color: #a88734 #9c7e31 #846a29;
   color: #111;
   cursor: pointer;
-}
+} */
